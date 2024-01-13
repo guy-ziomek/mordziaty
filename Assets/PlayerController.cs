@@ -79,6 +79,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (cameraMoving) return;
+        if (Input.GetMouseButton(0)) return;
         var mPx = Input.mousePosition.x;
         var mPy = Input.mousePosition.y;
         if (mPx < 80 && canRotate){

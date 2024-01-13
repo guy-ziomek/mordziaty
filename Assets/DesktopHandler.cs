@@ -9,6 +9,7 @@ public class DesktopHandler : MonoBehaviour
 {
     
     [SerializeField] GameObject appPrefab;
+    public DragableFile currentDrag;
     public Transform appsBarTransform;
     AppOnBar focusedApp;
 

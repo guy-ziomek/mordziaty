@@ -13,7 +13,6 @@ public class WindowUI : MonoBehaviour, IDragHandler, IPointerDownHandler
     Vector3 MouseDragStartPos;
     public AppOnBar appOnBarReference;
     protected DesktopHandler desktopHandler;
-    float borderSnapSize = 1;
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -25,7 +24,6 @@ public class WindowUI : MonoBehaviour, IDragHandler, IPointerDownHandler
                 var oldpos = transform.localPosition;
                 transform.localPosition = (Vector3) point-MouseDragStartPos;
                 Vector2 anchoredPosition = rectTransform.anchoredPosition;
-                print(anchoredPosition);
                 if(anchoredPosition.x+rectTransform.rect.width/2>desktopRect.rect.width/2){
                     anchoredPosition.x=desktopRect.rect.width/2-rectTransform.rect.width/2;
                 }
