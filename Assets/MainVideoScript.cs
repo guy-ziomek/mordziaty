@@ -35,10 +35,16 @@ public class MainVideoScript : MonoBehaviour
 
 
         pref.onPressEvent = () =>{
+            var startPos = rect1.anchoredPosition.x;
+            var endPos = rect2.anchoredPosition.x;
+            var startWorldPos = rect1.position;
+            var endWorldPos = rect2.position;
+
             var pref = Instantiate<DeleteFragmentScript>(deletePrefab);
             pref.transform.SetParent(transform,false);
             var prefrect = pref.GetComponent<RectTransform>();
             prefrect.anchoredPosition = new Vector2(startPos,prefrect.position.y);
+
             prefrect.sizeDelta = new Vector2(2,prefrect.sizeDelta.y);
 
             var test = transform.GetComponent<RectTransform>();
@@ -58,6 +64,8 @@ public class MainVideoScript : MonoBehaviour
             startPos += rect.rect.width/2;
             endPos += rect.rect.width/2;
             mainVideoElement.AddCut(startPos/100,endPos/100);
+            Destroy(rect1.gameObject);
+            Destroy(rect2.gameObject);
         };
     }
 

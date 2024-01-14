@@ -47,8 +47,6 @@ public class CutPlace : MonoBehaviour
                 gameObject.GetComponent<Image>().color = Color.gray;
                 neighbor.GetComponent<Image>().color = Color.gray;
                 mainVideoScript.CreateDeleteFragment(this,neighbor);
-                Destroy(gameObject);
-                Destroy(neighbor.gameObject);
             }
             return;
         }

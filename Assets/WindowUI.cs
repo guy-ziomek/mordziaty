@@ -46,6 +46,7 @@ public class WindowUI : MonoBehaviour, IDragHandler, IPointerDownHandler
     {
         if (eventData.button != PointerEventData.InputButton.Left) return; 
         Vector2 point;
+        if (desktopRect == null) return;
         var isvalid = RectTransformUtility.ScreenPointToLocalPointInRectangle(desktopRect, Input.mousePosition, Camera.main, out point);
         if (isvalid)
             MouseDragStartPos = (Vector3) point-transform.localPosition;

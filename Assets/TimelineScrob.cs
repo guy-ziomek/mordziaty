@@ -15,6 +15,7 @@ public class TimelineScrob : MonoBehaviour, IPointerDownHandler
         if (!isvalid) return;
         var width = rect.rect.width;
         var pos = point + new Vector2(width/2,0);
+        EditingWindow.instance.StopPlaying();
         EditingWindow.instance.UpdateTime(pos.x/100); 
     }
     void Update()

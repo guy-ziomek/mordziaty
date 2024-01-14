@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Video;
 
 public class EditingWindow : WindowUI
@@ -14,17 +15,38 @@ public class EditingWindow : WindowUI
     public static EditingWindow instance;
     public double currentTime = 0;
     double endTime = 0;
-    bool isPlaying = false;
+    bool _isplaying = false;
+    bool isPlaying {
+        get {return _isplaying;}
+        set {
+            _isplaying = value;
+            if (_isplaying){
+                videoPlayer.Play();
+                if (secondaryVideoPlayer.isActiveAndEnabled) secondaryVideoPlayer.Play();
+            } else {
+                videoPlayer.Pause();
+                secondaryVideoPlayer.Pause();
+            }
+            }
+        }
     public VideoPlayer videoPlayer;
     public VideoPlayer secondaryVideoPlayer;
 
     private void Awake(){
         instance = this;
     }
+
+    private void Start(){
+        videoPlayer.controlledAudioTrackCount = 1;
+        secondaryVideoPlayer.controlledAudioTrackCount = 1;
+        videoPlayer.SetDirectAudioVolume(0,0.25f);
+        secondaryVideoPlayer.SetDirectAudioVolume(0,0.75f);
+    }
     
     public void MainVidUpdate(MainVideoElement element){
         endTime = element.end;
         videoPlayer.Stop();
+        secondaryVideoPlayer.Stop();
         mainVideoElement = element;
         videoPlayer.clip = element.videoClip;  
         float minutes = Mathf.Floor((float) endTime / 60);
@@ -39,6 +61,9 @@ public class EditingWindow : WindowUI
             // currentTime = 0;
         }
     }
+    public void StopPlaying(){
+        isPlaying = false;
+    }
 
     public void UpdateTime(double time){
         if (mainVideoElement == null) return;
@@ -50,7 +75,7 @@ public class EditingWindow : WindowUI
         currentTimeText.text = $"{minutes.ToString("00")}:{seconds.ToString("00")}:{milsecs.ToString("00")}";
         playHead.localPosition = new Vector2((float)currentTime*100,playHead.localPosition.y);   
         videoPlayer.time = mainVideoElement.getTime(currentTime);
-        videoPlayer.Play();
+        // videoPlayer.Play();
         if (currentSecondVideo != null) {
             if (secondaryVideoPlayer.clip != currentSecondVideo.videoClip)
                 secondaryVideoPlayer.clip = currentSecondVideo.videoClip;
@@ -62,7 +87,12 @@ public class EditingWindow : WindowUI
     
 
     void Update(){
-        if (!isPlaying) return;
+        secondaryVideoPlayer.gameObject.SetActive(currentSecondVideo != null);
+        videoPlayer.gameObject.SetActive(mainVideoElement != null);
+        if (!isPlaying) {
+            secondaryVideoPlayer.Pause();    
+            return;
+            }
         if (!videoPlayer.isPrepared){videoPlayer.Prepare(); return;}
         UpdateTime(currentTime + Time.deltaTime);
         playHead.localPosition = new Vector2((float)currentTime*100,playHead.localPosition.y);

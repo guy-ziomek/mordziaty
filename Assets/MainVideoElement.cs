@@ -40,7 +40,6 @@ public class MainVideoElement : MonoBehaviour
                 time += cut.duration;
             }
         }
-        print(time);
         return time;
     }
 
@@ -56,7 +55,6 @@ public class MainVideoElement : MonoBehaviour
         });
         var index = cuts.IndexOf(cut);
         for (int i = index+1; i < cuts.Count; i++){
-            print(i);
             // dok przesuwanie dalszych nie dziala glitch ze usuwanie na poczatku cut z tylu a potem z przodu psuje ciecia
             var curCut = cuts[i];
             // curCut.start += change;
