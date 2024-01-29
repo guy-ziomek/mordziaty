@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Video;
 
-public class DragableFile : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DragableFile : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 
 {
     private Canvas canvas;
@@ -52,6 +52,8 @@ public class DragableFile : MonoBehaviour, IPointerDownHandler, IBeginDragHandle
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (clone == null) return;
+        if (eventData.button != PointerEventData.InputButton.Left) return;
          Vector2 point;
             var isvalid = RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, Input.mousePosition, Camera.main, out point);
             if (isvalid){
@@ -61,14 +63,10 @@ public class DragableFile : MonoBehaviour, IPointerDownHandler, IBeginDragHandle
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         if (clone == null) return;
         Destroy(clone.gameObject);
         desktopHandler.currentDrag = null;
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        
     }
 
     
@@ -76,6 +74,10 @@ public class DragableFile : MonoBehaviour, IPointerDownHandler, IBeginDragHandle
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(1)){
+            if (clone == null) return;
+            Destroy(clone.gameObject);
+            desktopHandler.currentDrag = null;
+        }
     }
 }

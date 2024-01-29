@@ -23,11 +23,14 @@ public class MainVideoElement : MonoBehaviour
     public double start = Mathf.Infinity;
     public double end = 0;
 
+    public int cutsAmount;
+
 
     List<Cut> cuts = new List<Cut>();
 
-    public void Init(VideoClip video)
+    public void Init(VideoClip video, int cuts)
     {
+        cutsAmount = cuts;
         videoClip = video;
         end = video.length;
         EditingWindow.instance.MainVidUpdate(this);
@@ -60,7 +63,7 @@ public class MainVideoElement : MonoBehaviour
             // curCut.start += change;
             // curCut.end += change;
         }
-        EditingWindow.instance.MainVidUpdate(this);
+        EditingWindow.instance.MainVidUpdate(this,cuts.Count);
         
         // float minutes = Mathf.Floor((float) startTime / 60);
         // float seconds = Mathf.RoundToInt((float) startTime % 60);

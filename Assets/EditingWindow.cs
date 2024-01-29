@@ -9,12 +9,38 @@ public class EditingWindow : WindowUI
 {
     [SerializeField] TMP_Text currentTimeText;
     [SerializeField] TMP_Text vidlengthText;
+    [SerializeField] TMP_Text cutsText;
+    [SerializeField] TMP_Text clipsText;
+
     [SerializeField] RectTransform playHead;
     MainVideoElement mainVideoElement;
     public DragableVideoScript currentSecondVideo;
     public static EditingWindow instance;
     public double currentTime = 0;
     double endTime = 0;
+
+
+    private int cutsMax;
+    private int _cutsMade;
+    public int cutsMade {
+        get {return _cutsMade;}
+        set {
+            _cutsMade = value;
+            cutsText.text = $"ciecia {_cutsMade}/{cutsMax}";
+        }
+    }
+
+    private int clipsMax = 3;
+    private int _clipsMade;
+    public int clipsMade {
+        get {return _clipsMade;}
+        set {
+            _clipsMade = value;
+            clipsText.text = $"wstawki {_clipsMade}/{clipsMax}";
+        }
+    }
+
+
     bool _isplaying = false;
     bool isPlaying {
         get {return _isplaying;}
@@ -36,14 +62,22 @@ public class EditingWindow : WindowUI
         instance = this;
     }
 
-    private void Start(){
+    override protected void Start(){
+        base.Start();
         videoPlayer.controlledAudioTrackCount = 1;
         secondaryVideoPlayer.controlledAudioTrackCount = 1;
         videoPlayer.SetDirectAudioVolume(0,0.25f);
         secondaryVideoPlayer.SetDirectAudioVolume(0,0.75f);
     }
     
-    public void MainVidUpdate(MainVideoElement element){
+    public void MainVidUpdate(MainVideoElement element, int? cuts = null){
+        
+        if (cuts==null){
+            cutsMax = element.cutsAmount;
+            cutsMade = 0;
+        }else{
+            cutsMade = cuts.Value;
+        }
         endTime = element.end;
         videoPlayer.Stop();
         secondaryVideoPlayer.Stop();
@@ -61,6 +95,15 @@ public class EditingWindow : WindowUI
             // currentTime = 0;
         }
     }
+
+    public void Render(){
+        if (cutsMade >= cutsMax && clipsMade >= clipsMax){
+            print("RENDERING");
+        }else{
+            print("co ty probujesz byczku");
+        }
+    }
+
     public void StopPlaying(){
         isPlaying = false;
     }

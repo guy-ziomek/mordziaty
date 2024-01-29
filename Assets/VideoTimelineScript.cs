@@ -41,8 +41,11 @@ public class VideoTimelineScript : MonoBehaviour, IDropHandler, IPointerMoveHand
         _drag = null;
     }
 
+
+
     public void OnDrop(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         MouseControl.instance.Default();
         if (desktopHandler.currentDrag != null && ghost!=null){
             var curDrag = desktopHandler.currentDrag;
@@ -55,11 +58,12 @@ public class VideoTimelineScript : MonoBehaviour, IDropHandler, IPointerMoveHand
                     return;
                 };
                 ghostDrag.videoClip = curDrag.vid;
+                EditingWindow.instance.clipsMade+=1;
                 ghostDrag.updateTimes();
             }
             if (dragg != null){
                 ghost.GetComponent<MainVideoScript>().generateCuts(dragg.cuts);
-                ghost.GetComponent<MainVideoElement>().Init(curDrag.vid);
+                ghost.GetComponent<MainVideoElement>().Init(curDrag.vid, dragg.cuts/2);
             }
             ghost.GetComponent<CanvasGroup>().alpha = 1;
             clear();
@@ -136,6 +140,10 @@ public class VideoTimelineScript : MonoBehaviour, IDropHandler, IPointerMoveHand
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(1) && ghost != null){
+            Destroy(ghost.gameObject);
+            clear();
+            MouseControl.instance.Default();     
+        }
     }
 }

@@ -17,10 +17,10 @@ public class DragableVideoScript : MonoBehaviour, IEndDragHandler, IBeginDragHan
 
     private double startTime;
     private double endTime;
+    private bool isPlaced = false;
 
      public double getTime(double time){
         var newTIme = time - startTime;
-        print($"{newTIme} CLIP THING");
         return newTIme;
     }
 
@@ -65,6 +65,7 @@ public class DragableVideoScript : MonoBehaviour, IEndDragHandler, IBeginDragHan
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
          Vector2 point;
             var isvalid = RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, Input.mousePosition, Camera.main, out point);
             if (isvalid){
@@ -83,10 +84,12 @@ public class DragableVideoScript : MonoBehaviour, IEndDragHandler, IBeginDragHan
         var width = rectTransform.rect.width;
         startTime = (double) (rectTransform.anchoredPosition.x-width/2)/100;
         endTime = (double) (rectTransform.anchoredPosition.x+width/2)/100;
+        isPlaced = true;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         canvasGroup.alpha = 0;
         if (!canBePlaced()){
             rectTransform.localPosition = oldPosition;
@@ -96,7 +99,8 @@ public class DragableVideoScript : MonoBehaviour, IEndDragHandler, IBeginDragHan
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right){
+        if (eventData.button == PointerEventData.InputButton.Right && isPlaced){
+            EditingWindow.instance.clipsMade -= 1;
             Destroy(gameObject);
         }
     }
