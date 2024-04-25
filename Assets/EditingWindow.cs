@@ -12,6 +12,9 @@ public class EditingWindow : WindowUI
     [SerializeField] TMP_Text cutsText;
     [SerializeField] TMP_Text clipsText;
 
+    [SerializeField] Transform errorTemplate;
+    [SerializeField] Transform renderTemplate;
+
     [SerializeField] RectTransform playHead;
     MainVideoElement mainVideoElement;
     public DragableVideoScript currentSecondVideo;
@@ -30,7 +33,7 @@ public class EditingWindow : WindowUI
         }
     }
 
-    private int clipsMax = 3;
+    private int clipsMax = 1;
     private int _clipsMade;
     public int clipsMade {
         get {return _clipsMade;}
@@ -64,6 +67,9 @@ public class EditingWindow : WindowUI
 
     override protected void Start(){
         base.Start();
+        if (GameManager.instance.gameState >= GameState.VideoRendered){
+            close();
+        }
         videoPlayer.controlledAudioTrackCount = 1;
         secondaryVideoPlayer.controlledAudioTrackCount = 1;
         videoPlayer.SetDirectAudioVolume(0,0.25f);
@@ -97,10 +103,24 @@ public class EditingWindow : WindowUI
     }
 
     public void Render(){
+        if (GameManager.instance.gameState != GameState.Base) return;
         if (cutsMade >= cutsMax && clipsMade >= clipsMax){
-            print("RENDERING");
+            var template = DesktopHandler.instance.createPopup(renderTemplate);
         }else{
-            print("co ty probujesz byczku");
+            var template = DesktopHandler.instance.createPopup(errorTemplate);
+            var reasonText = template.transform.Find("Reason").GetComponent<TMP_Text>();
+            string reason = "";
+            if (cutsMade < cutsMax){
+                reason += "\nZBYT MAŁO CIĘĆ";
+            }
+            if (clipsMade < clipsMax){
+                reason += "\nZBYT MAŁO WSTAWEK";
+            }
+            if (cutsMax == 0){
+                reason = "ERROR 1";
+            }
+            reasonText.text = $"Nie udało się wyrenderować {reason}";
+
         }
     }
 
@@ -130,6 +150,9 @@ public class EditingWindow : WindowUI
     
 
     void Update(){
+        if (GameManager.instance.gameState >= GameState.VideoRendered){
+            close();
+        }
         secondaryVideoPlayer.gameObject.SetActive(currentSecondVideo != null);
         videoPlayer.gameObject.SetActive(mainVideoElement != null);
         if (!isPlaying) {

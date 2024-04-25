@@ -20,6 +20,6 @@ public class DesktopAppScript : MonoBehaviour
     }
 
     private void Start(){
-        desktopHandler = GameObject.Find("LaptopCanvas/Desktop/DesktopContainer").GetComponent<DesktopHandler>();
+        desktopHandler = GameObject.Find("LaptopCanvas/Laptop/Desktop/DesktopContainer").GetComponent<DesktopHandler>();
     }
 }

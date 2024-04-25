@@ -96,12 +96,8 @@ public class WindowUI : MonoBehaviour, IDragHandler, IPointerDownHandler
     protected virtual void Start()
     {
         rectTransform = (RectTransform) transform;
-        desktopHandler = GameObject.Find("LaptopCanvas/Desktop/DesktopContainer").GetComponent<DesktopHandler>();
+        desktopHandler = GameObject.Find("LaptopCanvas/Laptop/Desktop/DesktopContainer").GetComponent<DesktopHandler>();
         desktopRect = (RectTransform) rectTransform.parent.parent;
-    }
-
-    void Update()
-    {
     }
 
 }

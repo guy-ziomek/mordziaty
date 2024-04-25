@@ -3022,7 +3022,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4652452811408615950}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3032,7 +3032,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 175.55, y: -133.79}
+  m_AnchoredPosition: {x: 175.54993, y: -133.79001}
   m_SizeDelta: {x: 85.8195, y: 26.256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8256796211430710126
@@ -4508,6 +4508,8 @@ MonoBehaviour:
   vidlengthText: {fileID: 6646593287111008874}
   cutsText: {fileID: 7947364012696204238}
   clipsText: {fileID: 6117571336316856706}
+  errorTemplate: {fileID: 7962812639485057093, guid: 1fa48384960cb624c90f3a7f954f5e0f, type: 3}
+  renderTemplate: {fileID: 2021152592943015795, guid: b47320e3186e7d741ae0011c71f27785, type: 3}
   playHead: {fileID: 2321455950938519910}
   currentSecondVideo: {fileID: 0}
   currentTime: 0

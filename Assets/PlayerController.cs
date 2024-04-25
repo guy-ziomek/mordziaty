@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     }
 
     IEnumerator moveCamera(Vector3 vector, float timetotake){
+        if (cameraMoving) yield break;
         var cam = Camera.main.transform;
         var startPos = cam.position;
         var dest = startPos+cam.TransformDirection(vector);
@@ -57,6 +58,7 @@ public class PlayerController : MonoBehaviour
 
     bool cameraMoving = false;
     IEnumerator rotateCamera(int dir){
+        if (cameraMoving) yield break;
         var totalMoveangle = 0f;
         cameraMoving = true;
         var startRotation = Camera.main.transform.rotation;
@@ -84,8 +86,10 @@ public class PlayerController : MonoBehaviour
         var mPy = Input.mousePosition.y;
         if (mPx < 80 && canRotate){
             StartCoroutine(rotateCamera(-1));
+            return;
         }else if(mPx > 850 && canRotate){
             StartCoroutine(rotateCamera(1));
+            return;
         }
         if (mPy < 70){
             if (downDebounce) return;
